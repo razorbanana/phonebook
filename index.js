@@ -50,5 +50,31 @@ app.delete('/api/persons/:id', (request, response) => {
     response.status(204).end()
 })
 
+const generateId = () => {
+    let id = parseInt(Math.random()*10000)
+    if(persons.find(person => person.id === id)){
+        return generateId()
+    }else{
+        return id
+    }
+}
+
+app.post('/api/persons', (request, response) => {
+    const body = request.body
+
+    if(!body.name || !body.number){
+        response.status(400).json({error: "missing data"})
+    }
+
+    const person = {
+        id : generateId(),
+        name: body.name,
+        number: body.number
+    }
+
+    persons = persons.concat(person)
+    response.json(person)
+})
+
 const PORT = 3001
 app.listen(PORT, ()=>{console.log(`Server is running on port ${PORT}`)})
