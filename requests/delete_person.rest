@@ -1,0 +1,1 @@
+DELETE http://api/persons/2
